@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 import MovieList from './components/MovieList';
 import Movie from './components/Movie';
 
 import MovieHeader from './components/MovieHeader';
 
 import EditMovieForm from './components/EditMovieForm';
+import AddMovieForm from "./components/AddMovieForm";
 import FavoriteMovieList from './components/FavoriteMovieList';
 
 import axios from 'axios';
@@ -15,22 +16,41 @@ const App = (props) => {
   const [movies, setMovies] = useState([]);
   const [favoriteMovies, setFavoriteMovies] = useState([]);
 
+  const { push } = useHistory();
+
+  
+
   useEffect(()=>{
-    axios.get('http://localhost:5000/api/movies')
+    const fetchMovieList = () => {
+      axios.get('http://localhost:5000/api/movies')
+          .then(res => {
+            setMovies(res.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+    }
+
+    fetchMovieList();
+  }, [movies]);
+
+  const deleteMovie = (id)=> {
+    axios
+      .delete(`http://localhost:5000/api/movies/${id}`)
       .then(res => {
-        setMovies(res.data);
+        console.log(res);
+        setMovies(movies.filter(movie => movie.id !== res.data));
+        push('/movies');
       })
       .catch(err => {
         console.log(err);
       });
-  }, []);
-
-  const deleteMovie = (id)=> {
-    
   }
 
   const addToFavorites = (movie) => {
-    
+
+    setFavoriteMovies([...favoriteMovies, movie]);
+  
   }
 
   return (
@@ -46,10 +66,15 @@ const App = (props) => {
         
           <Switch>
             <Route path="/movies/edit/:id">
+              <EditMovieForm  setMovies={setMovies} movies={movies} />
             </Route>
 
             <Route path="/movies/:id">
-              <Movie/>
+              <Movie deleteMovie={deleteMovie} addToFavorites={addToFavorites} />
+            </Route>
+
+            <Route path="/add-movie">
+              <AddMovieForm setMovies={setMovies} />
             </Route>
 
             <Route path="/movies">

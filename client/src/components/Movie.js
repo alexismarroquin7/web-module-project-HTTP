@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams, useHistory } from 'react-router-dom';
 
 import axios from 'axios';
+import e from 'cors';
 
 const Movie = (props) => {
     const { addToFavorites } = props;
@@ -20,6 +21,12 @@ const Movie = (props) => {
                 console.log(err);
             })
     }, [id]);
+
+    // const handleAddToFavorites = () => {
+    //     // return;
+    //     // props.addToFavorites(movie);
+    //     console.log(movie)
+    // }
 
     return(<div className="modal-page col">
         <div className="modal-dialog">
@@ -50,9 +57,9 @@ const Movie = (props) => {
                         </section>
                         
                         <section>
-                            <span className="m-2 btn btn-dark">Favorite</span>
+                            <span onClick={() => props.addToFavorites(movie)} className="m-2 btn btn-dark">Favorite</span>
                             <Link to={`/movies/edit/${movie.id}`} className="m-2 btn btn-success">Edit</Link>
-                            <span className="delete"><input type="button" className="m-2 btn btn-danger" value="Delete"/></span>
+                            <span className="delete"><input onClick={() => props.deleteMovie(id)} type="button" className="m-2 btn btn-danger" value="Delete"/></span>
                         </section>
                     </div>
                 </div>
