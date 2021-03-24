@@ -23,21 +23,38 @@ const EditMovieForm = (props) => {
         });
     }
 
+	const putMovie = (id) => {
+		axios
+			.put(`http://localhost:5000/api/movies/${id}`, movie)
+			.then(res => {
+				props.fetchMovieList();
+				push(`/movies/${id}`)
+			})
+			.catch(err => {
+				console.log(err);
+			});
+	}
+
     const handleSubmit = (e) => {
         e.preventDefault();
+		putMovie(id);
 	}
 	
 	const { title, director, genre, metascore, description } = movie;
 
 	useEffect(() => {
-		axios
-			.get(`http://localhost:5000/api/movies/${id}`)
-			.then(res => {
-				setMovie(res.data);
-			})
-			.catch(err => {
-				console.log(err.response.statusText);
-			});
+		const fetchMovieToEdit = () => {
+			axios
+				.get(`http://localhost:5000/api/movies/${id}`)
+				.then(res => {
+					setMovie(res.data);
+				})
+				.catch(err => {
+					console.log(err.response.statusText);
+				});
+		}
+
+		fetchMovieToEdit();
 	}, []);
 
     return (
