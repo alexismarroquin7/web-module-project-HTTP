@@ -7,6 +7,7 @@ import Movie from './components/Movie';
 import MovieHeader from './components/MovieHeader';
 
 import EditMovieForm from './components/EditMovieForm';
+import AddMovieForm from "./components/AddMovieForm";
 import FavoriteMovieList from './components/FavoriteMovieList';
 
 import axios from 'axios';
@@ -32,7 +33,6 @@ const App = (props) => {
   }, []);
 
   const deleteMovie = (id)=> {
-    // console.log(id);
     axios
       .delete(`http://localhost:5000/api/movies/${id}`)
       .then(res => {
@@ -66,6 +66,10 @@ const App = (props) => {
 
             <Route path="/movies/:id">
               <Movie deleteMovie={deleteMovie} />
+            </Route>
+
+            <Route path="/add-movie">
+              <AddMovieForm setMovies={setMovies} />
             </Route>
 
             <Route path="/movies">
