@@ -30,14 +30,15 @@ const App = (props) => {
             console.log(err);
           });
     }
-    
+
     fetchMovieList();
-  }, []);
+  }, [movies]);
 
   const deleteMovie = (id)=> {
     axios
       .delete(`http://localhost:5000/api/movies/${id}`)
       .then(res => {
+        console.log(res);
         setMovies(movies.filter(movie => movie.id !== res.data));
         push('/movies');
       })
