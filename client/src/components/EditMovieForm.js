@@ -27,11 +27,12 @@ const EditMovieForm = (props) => {
 		axios
 			.put(`http://localhost:5000/api/movies/${id}`, movie)
 			.then(res => {
-				props.fetchMovieList();
+				console.log(res);
+				props.setMovies([...props.movies, res.data]);
 				push(`/movies/${id}`)
 			})
 			.catch(err => {
-				console.log(err);
+				console.log(err.response);
 			});
 	}
 

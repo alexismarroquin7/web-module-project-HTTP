@@ -8,11 +8,13 @@ const AddMovieForm = (props) => {
     const { push } = useHistory();
 
     const [newMovie, setNewMovie] = useState({
+        id: Date.now(),
         title:"",
         director: "",
         genre: "",
         metascore: 0,
-        description: ""
+        description: "",
+        stars: ""
     });
 
     const handleChange = e => {
@@ -52,6 +54,9 @@ const AddMovieForm = (props) => {
         </label><br />
         <label>Metascore:
         <input type="number" value={newMovie.metascore} name="metascore" onChange={handleChange} />
+        </label><br />
+        <label>Stars:
+        <input type="text" value={newMovie.stars} name="stars" onChange={handleChange} />
         </label><br />
         <label>Description:
         <textarea type="text" value={newMovie.description} name="description" onChange={handleChange} />
